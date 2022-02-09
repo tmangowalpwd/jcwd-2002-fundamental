@@ -1,0 +1,65 @@
+<script>
+  // Untuk menyimpan data produk (buku) kita
+  let products = ["LOTR", "Harry Potter", "Sherlock", "Naruto"];
+
+  do {
+    const userMenuInput = prompt(`Menu:
+    1. Tambah data
+    2. Delete data
+    3. Show data
+    4. Edit data
+    5. Exit`);
+
+    // Jika user pilih tambah data
+    if (userMenuInput == "1") {
+      let userInputNewProduct = prompt("Anda mau menambahkan buku apa?");
+
+      products.push(userInputNewProduct);
+      alert("Data tertambahkan!");
+    } else if (userMenuInput == "2") {
+      // Jika user pilih delete data
+
+      let productsList = "";
+
+      for (let i = 0; i < products.length; i++) {
+        productsList += i + 1 + ". " + products[i] + "\n";
+      }
+
+      let userDeleteItemInput = prompt(productsList);
+      userDeleteItemInput = parseInt(userDeleteItemInput);
+
+      let userDeleteItemIndex = userDeleteItemInput - 1;
+
+      products.splice(userDeleteItemIndex, 1);
+    } else if (userMenuInput == "3") {
+      // Jika user pilih show data
+      let productsList = "";
+
+      for (let i = 0; i < products.length; i++) {
+        productsList += i + 1 + ". " + products[i] + "\n";
+      }
+
+      alert(productsList);
+    } else if (userMenuInput == "4") {
+      // Jika user pilih update data
+      let productsList = "";
+
+      for (let i = 0; i < products.length; i++) {
+        productsList += i + 1 + ". " + products[i] + "\n";
+      }
+
+      // User input nomor urut item (index + 1)
+      let userEditItemInput = prompt(productsList);
+      userEditItemInput = parseInt(userEditItemInput);
+
+      // Convert nomor urut menjadi index
+      let userEditItemIndex = userEditItemInput - 1;
+
+      let userEditValue = prompt(
+        `Mau ubah ${products[userEditItemIndex]} menjadi apa?`
+      );
+
+      products[userEditItemIndex] = userEditValue;
+    }
+  } while (true);
+</script>

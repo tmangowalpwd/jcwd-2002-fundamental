@@ -1,0 +1,317 @@
+<script>
+  class Product {
+    constructor(productName, price) {
+      this.productName = productName;
+      this.price = price;
+      this.quantity = 0;
+    }
+
+    calculateTotalPrice = () => {
+      return this.price * this.quantity;
+    };
+
+    // Untuk menghasilkan representasi dari Product dalam bentuk string
+    // dan menggunakan format menu (product name dan price)
+    toMenuString = () => {
+      return `${this.productName} || Rp. ${this.price.toLocaleString()}`;
+    };
+
+    // Untuk menghasilkan representasi dari Product dalam bentuk string
+    // dan menggunakan format cart (product name, price, quantity, dan total price (qty * price))
+    toCartString = () => {
+      return `${this.productName} x ${
+        this.quantity
+      } -> ${this.calculateTotalPrice().toLocaleString()}`;
+    };
+  }
+
+  class Book extends Product {
+    constructor(namaProduk, harga, author, yearReleased) {
+      // super digunakan untuk memanggil/mengisi constructor parent class (Product)
+      super(namaProduk, harga);
+      this.author = author;
+      this.yearReleased = yearReleased;
+    }
+
+    // Jika di child class memiliki nama method yang sama seperti parent class
+    // maka method tersebut akan ditimpa atau override
+    toMenuString = () => {
+      return `${this.productName} by ${this.author} (${
+        this.yearReleased
+      }) || Rp. ${this.price.toLocaleString()}`;
+    };
+  }
+
+  class TransactionReport {
+    constructor() {
+      this.transactions = [];
+    }
+
+    addItem = (transactionItem) => {
+      const date = new Date();
+      const today = `${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()}`;
+
+      transactionItem.transactionDate = today;
+
+      this.transactions.push(transactionItem);
+    };
+
+    displayTransactionList = () => {
+      let transactionList = "";
+      for (let i = 0; i < this.transactions.length; i++) {
+        transactionList += `${i + 1} ${this.transactions[
+          i
+        ].toCartString()} || Date: ${this.transactions[i].transactionDate}\n`;
+      }
+
+      return transactionList;
+    };
+  }
+
+  let products = [
+    new Book("LOTR", 10000, "Tolkien", "1995"),
+    new Book("Harry Potter", 7000, "Rowling", "2001"),
+    new Book("Sherlock", 12000, "Sir Arthur", "2005"),
+    new Book("Naruto", 15000, "Kishimoto", "2003"),
+  ];
+
+  let userTransactions = [];
+
+  let transactionReport = new TransactionReport();
+
+  const showMenu = (isPrompt = false, message = "") => {
+    let productsList = message + "\n";
+
+    for (let i = 0; i < products.length; i++) {
+      productsList += `${i + 1}. ${products[i].toMenuString()} \n`;
+    }
+
+    if (isPrompt) {
+      // User input nomor urut dari product list
+      let userInput = prompt(productsList);
+      userInput = parseInt(userInput);
+
+      // Nomor urut kita harus ubah menjadi index, makanya dikurang 1
+      let userInputIndex = userInput - 1;
+
+      // Return index dari input user supaya index-nya bisa digunakan
+      // Ketika return, berarti nanti panggilan function akan berubah
+      // menjadi index yang di-return
+      return userInputIndex;
+    }
+
+    alert(productsList);
+  };
+
+  const adminAddData = () => {
+    // Input nama produk yang baru
+    let userInputNewProduct = prompt("Anda mau menambahkan buku apa?");
+
+    // Input harga produk yang baru
+    let userInputNewPrice = prompt("Berapa harga barang baru anda?");
+    // Supaya harga produk yang diinput menjadi tipe number
+    // Kenapa harus parseInt? Karena ketika input, tipe datanya string
+    userInputNewPrice = parseInt(userInputNewPrice);
+
+    let userInputNewAuthor = prompt("Siapa penulis bukunya?");
+    let userInputNewYearReleased = prompt("Keluaran tahun berapa?");
+
+    products.push(
+      new Book(
+        userInputNewProduct,
+        userInputNewPrice,
+        userInputNewAuthor,
+        userInputNewYearReleased
+      )
+    );
+
+    alert("Data tertambahkan!");
+  };
+
+  const adminDeleteData = () => {
+    // Untuk dapat index dari item yang kita mau hapus (kita pilih)
+    const userDeleteItemIndex = showMenu(true);
+
+    // Untuk menghapus sebuah index dalam array
+    // .splice menerima 2 parameter
+    // parameter 1 -> menentukan index yang mau dihapus
+    // parameter 2 -> menentukan jumlah barang yang mau dihapus starting dari index (parameter 1)
+    products.splice(userDeleteItemIndex, 1);
+  };
+
+  const adminEditData = () => {
+    const userEditItemIndex = showMenu(true, "Mau edit data apa?");
+
+    let productName = prompt(
+      `Mau ubah ${products[userEditItemIndex].productName} menjadi apa?`
+    );
+    let price = prompt("Harganya berapa?");
+    price = parseInt(price);
+
+    let userEditAuthor = prompt("Siapa penulis barunya?");
+    let userEditYearReleased = prompt("Mau jadi keluaran tahun berapa?");
+
+    // Goals: mengubah productName, price, author, dan yearReleased
+    // Caranya: Ubah properties dari item yang kita pilih
+
+    // Spread dirinya sendiri (properties lama)
+    // Lalu untuk productName, price, author, dan yearReleased
+    // kita timpa value-nya
+    products[userEditItemIndex] = {
+      ...products[userEditItemIndex],
+      productName,
+      price,
+      author: userEditAuthor,
+      yearReleased: userEditYearReleased
+    }
+  };
+
+  // User functions
+  const userAddToCart = () => {
+    const userCartIndex = showMenu(true, "Pilih barang untuk add to cart");
+
+    let userCartQty = prompt(
+      `Mau beli ${products[userCartIndex].productName} berapa banyak?`
+    );
+    userCartQty = parseInt(userCartQty);
+
+    products[userCartIndex].quantity += userCartQty;
+  };
+
+  const userShowCart = (isCheckout = false) => {
+    let userCart = "";
+    let totalPrice = 0;
+
+    for (let i = 0; i < products.length; i++) {
+      let product = products[i];
+
+      userCart += `${i + 1}. ${product.toCartString()} \n`;
+
+      totalPrice += product.calculateTotalPrice();
+    }
+
+    // Tambah baris untuk total price
+    userCart += `\n Total belanjaan anda adalah Rp. ${totalPrice.toLocaleString()}`;
+
+    if (isCheckout) {
+      // Untuk pembayaran customer/user
+      do {
+        let userPayment = prompt(userCart);
+        // Kenapa parseInt? Supaya jadi number
+        userPayment = parseInt(userPayment);
+
+        // Kalau lebih (kembalian)
+        if (userPayment > totalPrice) {
+          // Tampilkan kembalian untuk user
+          alert(
+            `Kembalian anda sebesar Rp. ${(
+              userPayment - totalPrice
+            ).toLocaleString()}`
+          );
+          break;
+        } else if (userPayment === totalPrice) {
+          alert("Terima kasih sudah membayar dengan uang pas");
+          break;
+        } else if (userPayment < totalPrice) {
+          // Tampilkan user kurang berapa uangnya? (harga - pembayaran)
+          alert(
+            `Uang anda kurang Rp. ${(
+              totalPrice - userPayment
+            ).toLocaleString()}`
+          );
+        }
+      } while (true);
+
+      // Untuk menambahkan barang2 yang user udah add to cart dan checkout
+      // ke dalam list transaksi
+
+      // Q: Kenapa dipisah array-nya?
+      // A: Supaya transaksi2 sebelumnya tidak terpengaruh oleh data products
+      //    jika terjadi perubahan
+      for (let i = 0; i < products.length; i++) {
+        if (products[i].quantity !== 0) {
+          // Gunakan spread operator untuk copy object
+          // userTransactions.push({ ...products[i] });
+          transactionReport.addItem({ ...products[i] });
+        }
+      }
+
+      // Mengosongkan quantity dari semua item
+      // for (let i = 0; i < products.length; i++) {
+      //   products[i].quantity = 0;
+      // }
+
+      // Supaya function-nya berhenti, dan tidak melakukan alert
+      return;
+    }
+
+    alert(userCart);
+  };
+
+  do {
+    // Main menu
+    const userMainMenuInput = prompt(`Login sebagai:
+    1. Admin
+    2. User
+    3. Exit`);
+
+    if (userMainMenuInput == "1") {
+      do {
+        const adminMenuInput = prompt(`Menu:
+    1. Tambah data
+    2. Delete data
+    3. Show data
+    4. Edit data
+    5. Show report
+    6. Exit`);
+        // Jika user pilih tambah data
+        if (adminMenuInput == "1") {
+          adminAddData();
+        } else if (adminMenuInput == "2") {
+          adminDeleteData();
+        } else if (adminMenuInput == "3") {
+          showMenu(false, "Product List");
+        } else if (adminMenuInput == "4") {
+          // Jika user pilih update data
+          adminEditData();
+        } else if (adminMenuInput == "5") {
+          // Kalau 0, berarti user belum belanja
+          // Condition ada untuk menampilkan report hanya ketika user sudah pernah belanja
+
+          // Falsy dan truthy values
+          // Jika user sudah pernah transaksi
+          if (transactionReport.transactions.length) {
+            alert(transactionReport.displayTransactionList());
+          } else {
+            alert("Belum ada transaksi");
+          }
+        } else if (adminMenuInput == "6") {
+          break;
+        }
+      } while (true);
+    } else if (userMainMenuInput == "2") {
+      // Menu user
+      do {
+        const userMenuInput = prompt(`
+        1. Add to cart
+        2. Show cart
+        3. Checkout
+        4. Back`);
+
+        if (userMenuInput == "1") {
+          userAddToCart();
+        } else if (userMenuInput == "2") {
+          userShowCart();
+        } else if (userMenuInput == "3") {
+          userShowCart(true);
+        } else if (userMenuInput == "4") {
+          break;
+        }
+      } while (true);
+    } else if (userMainMenuInput == "3") {
+      break;
+    }
+  } while (true);
+</script>

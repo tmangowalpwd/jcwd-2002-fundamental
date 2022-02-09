@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD Data</title>
+  </head>
+  <body>
+    <style>
+      table,
+      td,
+      th {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+
+    <table>
+      <!-- Header untuk table -->
+      <thead>
+        <!-- tr = Row table -->
+        <tr>
+          <th>No.</th>
+          <th>Name</th>
+          <th>Occupation</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <!-- Data atau body table -->
+      <tbody id="tableData">
+        <!-- Untuk isi data lewat javascript/script -->
+      </tbody>
+      <!-- Footer table -->
+      <tfoot>
+        <tr>
+          <td></td>
+          <td>
+            <input id="nameInput" type="text" />
+          </td>
+          <td>
+            <select id="occupationInput">
+              <option>Software Developer</option>
+              <option>Digital Marketer</option>
+              <option>UI/UX</option>
+              <option>Data Scientist</option>
+            </select>
+          </td>
+          <td>
+            <label for="genderPria">
+              <input checked id="genderPria" name="gender" type="radio" value="Pria" />Pria
+            </label>
+            <label for="genderWanita">
+              <input id="genderWanita" name="gender" type="radio" value="Wanita" />Wanita
+            </label>
+            <label for="genderOthers">
+              <input id="genderOthers" name="gender" type="radio" value="Wanita" />Others
+            </label>
+              <input id="genderOthersInput" type="text">
+          </td>
+          <td>
+            <input type="text" id="ageInput">
+          </td>
+          <td>
+            <button onclick="addData()">Add</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <script>
+      class Person {
+        constructor(fullName, occupation, gender, age) {
+          this.fullName = fullName;
+          this.occupation = occupation;
+          this.gender = gender;
+          this.age = age;
+        }
+      }
+
+      let data = [
+        new Person("Mark", "Software Developer", "Pria", 17),
+        new Person("Steve", "CEO", "Pria", 21),
+        new Person("Bill", "UI/UX", "Pria", 13),
+        new Person("Seto", "Data Scientist", "Pria", 30),
+        // new Person({ fullName: "Mark", age: 20, gender: "Wanita", occupation: "Digital Marketer" })
+      ];
+
+      const renderData = () => {
+        let htmlResult = "";
+
+        data.forEach((val, idx) => {
+          htmlResult += `
+  <tr>
+    <td>${idx + 1}</td>
+    <td>${val.fullName}</td>
+    <td>${val.occupation}</td>
+    <td>${val.gender}</td>
+    <td>${val.age}</td>
+    <td>
+      <button onclick="deleteData(${idx})">Delete</button>
+    </td>
+  </tr>
+  `;
+        });
+
+        document.getElementById("tableData").innerHTML = htmlResult;
+      };
+
+      renderData();
+
+      const addData = () => {
+        const fullNameInput = document.getElementById("nameInput").value;
+        const occupationInput =
+          document.getElementById("occupationInput").value;
+        let ageInput = document.getElementById("ageInput").value;
+        ageInput = parseInt(ageInput);
+
+        const isPriaChecked = document.getElementById("genderPria").checked
+        const isWanitaChecked = document.getElementById("genderWanita").checked
+        const isOthersChecked = document.getElementById("genderOthers").checked
+
+
+        let gender;
+
+        // Jika radio Pria sedang dipilih / checked
+        if (isPriaChecked) {
+          gender = document.getElementById("genderPria").value
+        } else if (isWanitaChecked) { // Jika radio Wanita sedang dipilih / checked
+          gender = document.getElementById("genderWanita").value
+        } else if (isOthersChecked) {
+          gender = document.getElementById("genderOthersInput").value
+        }
+
+        // Input validation
+        if (!fullNameInput || !occupationInput) {
+          alert("Kedua field harus diisi");
+          return;
+        }
+
+        const newPerson = new Person(
+          fullNameInput,
+          occupationInput,
+          gender,
+          ageInput
+        );
+
+        data.push(newPerson);
+
+        console.log(data);
+
+        // Tampilkan kembali data terbaru
+        renderData();
+
+        document.getElementById("nameInput").value = "";
+        document.getElementById("genderOthersInput").value = "";
+      };
+
+      const deleteData = (deleteIdx) => {
+        // alert(deleteIdx)
+        data.splice(deleteIdx, 1);
+        renderData();
+      };
+    </script>
+  </body>
+</html>

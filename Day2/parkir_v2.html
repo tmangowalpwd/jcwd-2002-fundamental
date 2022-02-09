@@ -1,0 +1,61 @@
+<script>
+  let willRepeat;
+  do {
+    let userVehicle;
+    do {
+      userVehicle = prompt(`Pilih kendaraan anda:
+      1. Motor
+      2. Mobil
+      3. Exit`);
+    } while (!(userVehicle == "1" || userVehicle == "2" || userVehicle == "3"));
+
+    let userTotalParkingFee = 0;
+
+    if (userVehicle == "1" || userVehicle == "2") {
+      let durationInHours;
+      do {
+        durationInHours = prompt("Berapa lama anda parkir? (Jam)");
+        durationInHours = parseInt(durationInHours);
+      } while (durationInHours < 0);
+
+      if (durationInHours > 0) {
+        let firstTwoHours;
+        let feePerHour;
+        let maxFee;
+
+        if (userVehicle == "1") {
+          firstTwoHours = 3000;
+          feePerHour = 1000;
+          maxFee = 30000;
+        } else if (userVehicle == "2") {
+          firstTwoHours = 5000;
+          feePerHour = 2000;
+          maxFee = 50000;
+        }
+
+        if (durationInHours <= 2) {
+          userTotalParkingFee = firstTwoHours;
+        } else if (durationInHours > 2) {
+          userTotalParkingFee =
+            firstTwoHours + feePerHour * (durationInHours - 2);
+        }
+
+        if (userTotalParkingFee > maxFee) {
+          userTotalParkingFee = maxFee;
+        }
+
+        alert(
+          `Total biaya parkir anda adalah: Rp. ${userTotalParkingFee.toLocaleString()}`
+        );
+      } else {
+        alert("Parkir anda di bawah 1 jam, masih gratis bro");
+      }
+    }
+
+    if (userVehicle === "3") {
+      willRepeat = false;
+    } else {
+      willRepeat = confirm("Mau ulang?");
+    }
+  } while (willRepeat);
+</script>
