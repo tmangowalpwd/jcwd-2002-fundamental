@@ -31,3 +31,9 @@
 // arr1 = [1, 3, 7, 4]
 // arr2 = [1, 5, 3, 7, 0]
 // Output: [5, 4, 0]
+
+// Bonus Question
+// 5. Remove duplicates
+// Diketahui ada 2 array of numbers, dimana 2 array tersebut memiliki beberapa
+// value/number yang sama. Tampilkan sebuah array baru yang berisi list value
+// dari kedua array tersebut, tetapi sudah
