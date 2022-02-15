@@ -2,6 +2,8 @@
 // Input: "javascript"
 // Output: "jvscrpt"
 
+const alphabetArr = "abcdefghijklnopqrstuvwxyz".split("")
+
 // 2. Alphabet value
 // Hitung jumlah value suatu string dimana setiap huruf memiliki value
 // posisi huruf tersebut di dalam abjad. Contoh: A = 1, B = 2, Z = 26, J = 10
@@ -37,3 +39,7 @@
 // Diketahui ada 2 array of numbers, dimana 2 array tersebut memiliki beberapa
 // value/number yang sama. Tampilkan sebuah array baru yang berisi list value
 // dari kedua array tersebut, tetapi sudah
+// Input:
+// arr1 = [1, 3, 7, 4]
+// arr2 = [1, 5, 3, 7, 0]
+// Output: [1, 3, 4, 5, 7, 0]
