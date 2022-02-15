@@ -13,7 +13,7 @@
   <title>Document</title>
 </head>
 
-<body class="container">
+<body class="container py-5">
   <table class="table text-center">
     <thead>
       <tr>
@@ -51,11 +51,10 @@
     </tbody>
   </table>
   <center>
-    <button class="btn btn-success" onclick="checkout()">Checkout</button>
+    <button class="btn btn-info" onclick="checkout()">Checkout</button>
     <br>
     <br>
     <div id="checkout">
-      <!-- <h3>Total Belanja anda: Rp. 100,000</h3> -->
     </div>
   </center>
 
@@ -147,37 +146,74 @@
       }
     }
 
-    // const incrementCart = (productIdx) => {
-    //   const product = productDatabase[productIdx]
-    //   if (product.cartQuantity < product.stock) {
-    //     product.cartQuantity += 1
-
-    //     renderData()
-    //   } else {
-    //     alert("Quantity cart tidak boleh melebihi jumlah stock yang tersedia")
-    //   }
-    // }
-
-    // const decrementCart = (productIdx) => {
-    //   const product = productDatabase[productIdx]
-    //   if (product.cartQuantity > 0) {
-    //     product.cartQuantity -= 1
-
-    //     renderData()
-    //   } else {
-    //     alert("Quantity cart tidak boleh kurang dari 0")
-    //   }
-    // }
-
-    const checkout = () => {
+    const calculateTotalTransaction = () => {
       let totalPrice = 0
 
       productDatabase.forEach((val, idx) => {
-        totalPrice += val.checkout()
+        totalPrice += val.calculateTotalPrice()
       })
 
-      document.getElementById("checkout").innerHTML = `<h3>Total belanjaan anda: Rp ${totalPrice.toLocaleString()} </h3>`
+      return totalPrice
+    }
+
+    let paymentTimer;
+    let seconds
+
+    const checkout = () => {
+      let totalPrice = calculateTotalTransaction()
+
+      seconds = 15
+
+      paymentTimer = setInterval(() => {
+        console.log(seconds)
+        if (seconds <= 0) {
+          alert("Anda gagal bayar dalam waktu yang ditentukan")
+          clearInterval(paymentTimer)
+          document.getElementById("checkout").innerHTML = ""
+        }
+
+        document.getElementById("timer").innerHTML = seconds
+        seconds -= 1
+
+      }, 1000)
+
+      document.getElementById("checkout").innerHTML = `
+        <h3>Total belanjaan anda: Rp ${totalPrice.toLocaleString()} </h3>
+        <h3 style="color: red">Waktu anda untuk bayar tersisa: <span id="timer">${seconds}</span></h3>
+        <div class="row">
+          <div class="col-8">
+            <input id="paymentInput" class="form-control" type="number">
+          </div>
+          <div class="col-4">
+            <button onclick="processPayment()" class="btn w-100 btn-success">Pay</button>
+          </div>
+        </div>
+      `
       renderData()
+    }
+
+    const processPayment = () => {
+      let userPaymentInput = document.getElementById("paymentInput").value
+      userPaymentInput = parseInt(userPaymentInput)
+
+      let totalPrice = calculateTotalTransaction()
+
+      if (userPaymentInput >= totalPrice) {
+        alert(`Terima kasih sudah berbelanja! Kembalian anda sebesar Rp. ${(userPaymentInput - totalPrice).toLocaleString()}`)
+        // 1. Kurangin stock dan reset cart
+        productDatabase.forEach((val) => {
+          val.checkout()
+        })
+
+        renderData()
+        // 2. Stop timer
+        clearInterval(paymentTimer)
+
+        // 3. Clear div 'checkout'
+        document.getElementById("checkout").innerHTML = ""
+      } else if (userPaymentInput < totalPrice) {
+        alert(`Uang anda kurang Rp. ${(totalPrice - userPaymentInput).toLocaleString()}`)
+      }
     }
   </script>
 </body>
