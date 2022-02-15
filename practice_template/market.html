@@ -161,6 +161,11 @@
 
     const checkout = () => {
       let totalPrice = calculateTotalTransaction()
+      
+      if (!totalPrice) {
+        alert("Anda belum ada barang di cart!")
+        return
+      }
 
       seconds = 15
 
