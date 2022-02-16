@@ -89,7 +89,7 @@ const alphabetValue = (word = "") => {
   return totalValue;
 };
 
-console.log(alphabetValue("abcabc"));
+// console.log(alphabetValue("abcabc"));
 
 // ===============================================
 
@@ -102,6 +102,28 @@ console.log(alphabetValue("abcabc"));
 
 // Input: "abc"
 // Output: 4
+
+// ===== Alphabet Odd Value ==========================
+
+const alphabetOddValue = (word = "") => {
+  const wordArr = word.split("");
+  let alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+  let totalValue = 0;
+
+  wordArr.forEach((character) => {
+    const characterValue = alphabet.indexOf(character) + 1;
+
+    if (characterValue % 2 !== 0) {
+      totalValue += characterValue;
+    }
+  });
+
+  return totalValue;
+};
+
+console.log(alphabetOddValue("steve"));
+
+// ===================================================
 
 // 4. Unique items
 // Diketahui ada 2 array of numbers, dimana 2 array tersebut memiliki beberapa
