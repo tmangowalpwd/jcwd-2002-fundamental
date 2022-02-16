@@ -197,5 +197,4 @@ const removeDuplicates = (arr1 = [], arr2 = []) => {
 };
 
 console.log(removeDuplicates([1, 3, 7, 4], [1, 5, 3, 7, 0]));
-
 // =======================================================

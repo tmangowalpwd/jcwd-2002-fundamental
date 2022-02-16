@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Review Fundamental</title>
+  </head>
+  <body>
+    <h1 id="welcomeMessage">Halo kawanku</h1>
+    <h1>Selamat datang di kelas Programming</h1>
+
+    <input id="inputName" />
+    <button onclick="greetUser()">Greet Me!</button>
+    <button onclick="translateTitle()">Translate!</button>
+
+    <script>
+      const translateTitle = () => {
+        document.getElementsByTagName("h1")[1].innerHTML =
+          "Welcome to programming class";
+      };
+
+      const greetUser = () => {
+        const usernameInput = document.getElementsByTagName("input")[0].value;
+
+        document.getElementById(
+          "welcomeMessage"
+        ).innerHTML = `Halo ${usernameInput}`;
+      };
+    </script>
+  </body>
+</html>
