@@ -2,13 +2,13 @@
 // Input: "javascript"
 // Output: "jvscrpt"
 
-// ===== Remove Vowels =====
+// ===== Remove Vowels ==========================
 
 // Cara pertama
 // const removeVocal = (word = "") => {
 //   // 1. Ubah word menjadi array supaya bisa ambil per character (huruf)
 //   // 2. Check per huruf apakah huruf tsbt merupakan sebuah vowel
-//   // 3. Jika huruf adalah sebuah vowel, hapus
+//   // 3. Jika huruf BUKAN sebuah vowel, concat ke string result
 
 //   let strResult = "";
 //   const wordArr = word.split(""); // return sebuah array
@@ -44,12 +44,20 @@ const removeVocal = (word = "") => {
   return strResult;
 };
 
-console.log(removeVocal("JaVAscript is vEry easy"));
+// const removeVocal = (word = "") => {
+//   word = word.replace(/[aiueo]/gi, "");
+//   // Regular Expression
+//   return word;
+// };
+
+// console.log(removeVocal("javAscrIpt"));
 
 // const kata = "javascript";
 // const kataArr = kata.split("");
 
 // console.log(kataArr);
+
+// ===========================================
 
 // 2. Alphabet value
 // Hitung jumlah value suatu string dimana setiap huruf memiliki value
@@ -60,6 +68,30 @@ console.log(removeVocal("JaVAscript is vEry easy"));
 
 // Input: "steve"
 // Output: 71
+
+// ===== Alphabet Value ==========================
+// 1. Pecah string menjadi array supaya bisa dapet per huruf (character)
+// 2. Kita harus punya list abjad berurutan
+// 3. Check value setiap huruf, cocokkan dengan posisi huruf tsbt di abjad
+// 4. Tambahkan/jumlahkan value ke total
+
+const alphabetValue = (word = "") => {
+  const wordArr = word.split("");
+  let alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+  let totalValue = 0;
+
+  wordArr.forEach((character) => {
+    const characterValue = alphabet.indexOf(character) + 1;
+
+    totalValue += characterValue;
+  });
+
+  return totalValue;
+};
+
+console.log(alphabetValue("abcabc"));
+
+// ===============================================
 
 // 3. Odd alphabet value
 // Sama seperti soal nomor 2, tetapi kali ini hanya hitung huruf yang memiliki
