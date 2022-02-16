@@ -1,24 +1,42 @@
 // 1. Remove vowels
 // Input: "javascript"
 // Output: "jvscrpt"
-const removeVocal = (word = "") => {
-  // 1. Ubah word menjadi array supaya bisa ambil per character (huruf)
-  // 2. Check per huruf apakah huruf tsbt merupakan sebuah vowel
-  // 3. Jika huruf adalah sebuah vowel, hapus
 
+// ===== Remove Vowels =====
+
+// Cara pertama
+// const removeVocal = (word = "") => {
+//   // 1. Ubah word menjadi array supaya bisa ambil per character (huruf)
+//   // 2. Check per huruf apakah huruf tsbt merupakan sebuah vowel
+//   // 3. Jika huruf adalah sebuah vowel, hapus
+
+//   let strResult = "";
+//   const wordArr = word.split(""); // return sebuah array
+
+//   wordArr.forEach((character) => {
+//     if (
+//       !(
+//         character === "a" ||
+//         character === "i" ||
+//         character === "u" ||
+//         character === "e" ||
+//         character === "o"
+//       )
+//     ) {
+//       strResult += character;
+//     }
+//   });
+
+//   return strResult;
+// };
+
+const removeVocal = (word = "") => {
   let strResult = "";
   const wordArr = word.split(""); // return sebuah array
+  const vowelArr = ["a", "i", "u", "e", "o"];
 
   wordArr.forEach((character) => {
-    if (
-      !(
-        character === "a" ||
-        character === "i" ||
-        character === "u" ||
-        character === "e" ||
-        character === "o"
-      )
-    ) {
+    if (!vowelArr.includes(character.toLowerCase())) {
       strResult += character;
     }
   });
@@ -26,7 +44,7 @@ const removeVocal = (word = "") => {
   return strResult;
 };
 
-console.log(removeVocal("javascript is very easy"));
+console.log(removeVocal("JaVAscript is vEry easy"));
 
 // const kata = "javascript";
 // const kataArr = kata.split("");
