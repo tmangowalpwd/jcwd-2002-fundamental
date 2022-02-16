@@ -1,8 +1,37 @@
 // 1. Remove vowels
 // Input: "javascript"
 // Output: "jvscrpt"
+const removeVocal = (word = "") => {
+  // 1. Ubah word menjadi array supaya bisa ambil per character (huruf)
+  // 2. Check per huruf apakah huruf tsbt merupakan sebuah vowel
+  // 3. Jika huruf adalah sebuah vowel, hapus
 
-const alphabetArr = "abcdefghijklnopqrstuvwxyz".split("")
+  let strResult = "";
+  const wordArr = word.split(""); // return sebuah array
+
+  wordArr.forEach((character) => {
+    if (
+      !(
+        character === "a" ||
+        character === "i" ||
+        character === "u" ||
+        character === "e" ||
+        character === "o"
+      )
+    ) {
+      strResult += character;
+    }
+  });
+
+  return strResult;
+};
+
+console.log(removeVocal("javascript is very easy"));
+
+// const kata = "javascript";
+// const kataArr = kata.split("");
+
+// console.log(kataArr);
 
 // 2. Alphabet value
 // Hitung jumlah value suatu string dimana setiap huruf memiliki value
