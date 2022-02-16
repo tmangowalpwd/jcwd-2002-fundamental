@@ -161,7 +161,7 @@ const uniqueItems = (arr1 = [], arr2 = []) => {
   return resultArr;
 };
 
-console.log(uniqueItems([1, 3, 7, 4], [1, 5, 3, 7, 0]));
+// console.log(uniqueItems([1, 3, 7, 4], [1, 5, 3, 7, 0]));
 
 // =============================================
 
@@ -174,3 +174,28 @@ console.log(uniqueItems([1, 3, 7, 4], [1, 5, 3, 7, 0]));
 // arr1 = [1, 3, 7, 4]
 // arr2 = [1, 5, 3, 7, 0]
 // Output: [1, 3, 4, 5, 7, 0]
+
+// ===== Remove Duplicate Items ==========================
+// 1. Buat array kosong untuk menampung result
+// 2. Push semua item dari arr1 ke dalam array result
+// 3. Apakah value di arr2 sudah ada di array result?
+//    a. Kalau ada, skip
+//    b. Kalau tidak ada, push value-nya
+const removeDuplicates = (arr1 = [], arr2 = []) => {
+  const resultArr = [...arr1];
+
+  arr2.forEach((val) => {
+    if (!resultArr.includes(val)) {
+      resultArr.push(val);
+    }
+  });
+
+  return resultArr;
+
+  // Cara keren (menggunakan Set)
+  // return [...new Set([...arr1, ...arr2])];
+};
+
+console.log(removeDuplicates([1, 3, 7, 4], [1, 5, 3, 7, 0]));
+
+// =======================================================
