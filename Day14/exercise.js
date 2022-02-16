@@ -133,7 +133,37 @@ console.log(alphabetOddValue("steve"));
 // Input:
 // arr1 = [1, 3, 7, 4]
 // arr2 = [1, 5, 3, 7, 0]
-// Output: [5, 4, 0]
+// Output: [4, 5, 0]
+
+// ===== Unique Items ==========================
+// 1. Check di arr1 apakah value-nya ada di arr2
+//   a. Kalau ada, skip
+//   b. Kalau tidak ada, masukkan ke array baru
+// 2. Check di arr2 apakah value-nya ada di arr1
+//   a. Kalau ada, skip
+//   b. Kalau tidak ada, masukkan ke array baru
+
+const uniqueItems = (arr1 = [], arr2 = []) => {
+  const resultArr = [];
+
+  arr1.forEach((val) => {
+    if (!arr2.includes(val)) {
+      resultArr.push(val);
+    }
+  });
+
+  arr2.forEach((val) => {
+    if (!arr1.includes(val)) {
+      resultArr.push(val);
+    }
+  });
+
+  return resultArr;
+};
+
+console.log(uniqueItems([1, 3, 7, 4], [1, 5, 3, 7, 0]));
+
+// =============================================
 
 // Bonus Question
 // 5. Remove duplicates
